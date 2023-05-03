@@ -5,7 +5,7 @@ import GamePanel from "./game-panel.component";
 import StyledGameContainer from "./game.style";
 import GamePieces from "./game-pieces.component";
 import { easyPieces, normalPieces, difficultPieces } from "../all-pieces";
-import Backdrop from "./backdrop.component";
+//import Backdrop from "./backdrop.component";
 
 const allPieces = easyPieces.concat(normalPieces).concat(difficultPieces);
 
@@ -66,6 +66,7 @@ const TheGame = () => {
       setScore(0);
       setPieces(generateNewPieces());
       setGameMode(gameModeRef.current);
+      gameOverRef.current = false;
    };
    const checkIfFits = (piece, _i, _j) => {
       if (_i < 0 || _j < 0 || _i > 8 || _j > 8) return false;
