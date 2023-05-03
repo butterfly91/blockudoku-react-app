@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { StyledPiece, PseudoPiece } from "./one-piece.style";
 import { StyledPieceCell } from "./one-cell.style";
 
+const isTouch = matchMedia("(hover: none)").matches;
+
 const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
    const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
@@ -13,6 +15,12 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
       setMousePosition({
          x: event.clientX,
          y: event.clientY,
+      });
+   };
+   const handleWindowTouchMove = (event) => {
+      setMousePosition({
+         x: event.touches[0].clientX,
+         y: event.touches[0].clientY,
       });
    };
 
@@ -27,13 +35,18 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
 
    useEffect(() => {
       if (!isMouseDown) return;
-      //dragTimeout = setTimeout(() => {
       setIsDragged(true);
-      //}, 100);
-      window.addEventListener("mousemove", handleWindowMouseMove);
-      return () => {
-         window.removeEventListener("mousemove", handleWindowMouseMove);
-      };
+      if (!isTouch) {
+         window.addEventListener("mousemove", handleWindowMouseMove);
+         return () => {
+            window.removeEventListener("mousemove", handleWindowMouseMove);
+         };
+      } else {
+         window.addEventListener("touchmove", handleWindowTouchMove);
+         return () => {
+            window.removeEventListener("touchmove", handleWindowTouchMove);
+         };
+      }
    }, [isMouseDown]);
 
    const calculateClasses = () => {
@@ -47,10 +60,17 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
    };
 
    const onMouseDownHandler = (event) => {
-      setMousePosition({
-         x: event.clientX,
-         y: event.clientY,
-      });
+      if (!isTouch) {
+         setMousePosition({
+            x: event.clientX,
+            y: event.clientY,
+         });
+      } else {
+         setMousePosition({
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY,
+         });
+      }
       setIsMouseDown(true);
       let rect = event.target.parentElement.getBoundingClientRect();
       setMouseOffset({
