@@ -5,12 +5,14 @@ import GamePanel from "./game-panel.component";
 import StyledGameContainer from "./game.style";
 import GamePieces from "./game-pieces.component";
 import { easyPieces, normalPieces, difficultPieces } from "../all-pieces";
+import Backdrop from "./backdrop.component";
 
 const allPieces = easyPieces.concat(normalPieces).concat(difficultPieces);
 
 const TheGame = () => {
    const [gameMode, setGameMode] = useState("difficult");
    const gameModeRef = useRef("difficult");
+   const gameOverRef = useRef(false);
 
    let lastPieceIndex;
    if (gameMode === "easy") lastPieceIndex = easyPieces.length;
@@ -149,6 +151,7 @@ const TheGame = () => {
       setBoard(updatedBoard);
    };
    const pieceDragUpdate = (piece, pieceCoordinates, id, isDropped = false) => {
+      if (gameOverRef.current) return;
       setDraggedPiece({ piece, pieceCoordinates, id, isDropped });
    };
 
@@ -158,15 +161,17 @@ const TheGame = () => {
 
    const difficultyChange = (event) => {
       gameModeRef.current = event.target.value;
-      console.log(gameModeRef);
    };
 
    if (pieces.length === 0) {
       setPieces(generateNewPieces());
    }
 
-   if (checkIfGameOver()) {
-      console.log("game over");
+   if (!gameOverRef.current) {
+      if (checkIfGameOver()) {
+         gameOverRef.current = true;
+         alert("Игра окончена");
+      }
    }
 
    return (

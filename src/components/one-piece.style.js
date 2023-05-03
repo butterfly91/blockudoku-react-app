@@ -18,7 +18,7 @@ export const StyledPiece = styled.div`
 
 export const PseudoPiece = styled.div`
    display: none;
-   height: ${(boardCellSize / scaleFactor) * 4 + 1.5}px;
+   height: ${(boardCellSize / scaleFactor) * 5}px;
    &.isDragged {
       display: block;
       visibility: hidden;
