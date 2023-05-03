@@ -108,7 +108,9 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
             onClick={onClickHandler}
             className={calculateClasses()}
             onMouseDown={onMouseDownHandler}
+            onTouchStart={onMouseDownHandler}
             onMouseUp={onMouseUpHandler}
+            onTouchEnd={onMouseDownHandler}
             piecePosition={piecePosition()}
          >
             {getPieceCells()}
