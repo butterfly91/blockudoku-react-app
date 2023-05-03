@@ -1,4 +1,4 @@
-https://master--animated-phoenix-84b2bf.netlify.app
+https://animated-phoenix-84b2bf.netlify.app
 
 # Getting Started with Create React App
 
