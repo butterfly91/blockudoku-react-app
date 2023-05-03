@@ -60,23 +60,27 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
    };
 
    const onMouseDownHandler = (event) => {
+      let rect = event.target.parentElement.getBoundingClientRect();
       if (!isTouch) {
          setMousePosition({
             x: event.clientX,
             y: event.clientY,
+         });
+         setMouseOffset({
+            x: rect.left - event.clientX,
+            y: rect.top - event.clientY,
          });
       } else {
          setMousePosition({
             x: event.touches[0].clientX,
             y: event.touches[0].clientY,
          });
+         setMouseOffset({
+            x: rect.left - event.touches[0].clientX,
+            y: rect.top - event.touches[0].clientY,
+         });
       }
       setIsMouseDown(true);
-      let rect = event.target.parentElement.getBoundingClientRect();
-      setMouseOffset({
-         x: rect.left - event.clientX,
-         y: rect.top - event.clientY,
-      });
    };
 
    const onClickHandler = () => {
@@ -130,7 +134,7 @@ const Piece = ({ piece, onPieceClickHandler, index, pieceDragUpdate }) => {
             onMouseDown={onMouseDownHandler}
             onTouchStart={onMouseDownHandler}
             onMouseUp={onMouseUpHandler}
-            onTouchEnd={onMouseDownHandler}
+            onTouchEnd={onMouseUpHandler}
             piecePosition={piecePosition()}
          >
             {getPieceCells()}
